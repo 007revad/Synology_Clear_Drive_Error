@@ -3,6 +3,12 @@ Clear drive critical errors so DSM will let you use the drive
 
 If a drive gets kicked out of RAID DSM stores "status critical" in a database and will not let you use the drive again. If you test the drive in a computer and find there is nothing wrong with the drive you can use this script on the Synology to delete that drive's "status critical" entries from DSM's database.
 
+## Download the script
+
+1. Download the latest version _Source code (zip)_ from https://github.com/007revad/Synology_clear_drive_error/releases
+2. Save the download zip file to a folder on the Synology.
+3. Unzip the zip file.
+
 ## How to run the script
 
 ### Run the script via SSH
