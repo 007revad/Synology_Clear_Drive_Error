@@ -5,5 +5,5 @@ If a drive gets kicked out of RAID DSM stores "status critical" in a database an
 
 ## Screenshots
 
-<p align="center">Clear critical error for 2 drives</p>
+<p align="center">Clearing critical error for 2 drives</p>
 <p align="center"><img src="/images/script.png"></p>
