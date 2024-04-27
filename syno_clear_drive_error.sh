@@ -53,7 +53,7 @@ fi
 
 if [[ ! -f "$file" ]]; then
     ding
-    echo "$file not found!"
+    echo -e "${Error}ERROR${Off} $file not found!"
     exit 1
 fi
 
@@ -165,3 +165,4 @@ else
 fi
 
 exit
+
