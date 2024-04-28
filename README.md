@@ -32,6 +32,10 @@ sudo -s /volume1/scripts/syno_clear_drive_error.sh
 > **Note** <br>
 > Replace /volume1/scripts/ with the path to where the script is located.
 
+### After running the script
+
+If Storage Manager is already open, close it and then open it again.
+
 ## Screenshots
 
 <p align="center">Clearing critical error for 2 drives</p>
