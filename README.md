@@ -9,7 +9,9 @@
 
 Clear [critical drive errors](critical-drive.md) so DSM will let you use the drive
 
-If a drive gets kicked out of RAID DSM stores "status critical" in a database and will not let you use the drive again. If you run an extended S.M.A.R.T. test on the drive in a computer and it says there is nothing wrong with the drive DSM will still refuse to let you use the drive. You can use this script on the Synology to delete that drive's "status critical" entries from DSM's database. Then DSM will let you use the drive again.
+If DSM decides a drive is critical DSM stores "status critical" in a database and will not let you use the drive again. If you run an extended S.M.A.R.T. test on the drive in a computer and it says there is nothing wrong with the drive DSM will still refuse to let you use the drive. You can use this script on the Synology to delete that drive's "status critical" entries from DSM's database. Then DSM will let you use the drive again.
+
+**NOTE** The script does **not** fix a faulty drive.
 
 ## Download the script
 
