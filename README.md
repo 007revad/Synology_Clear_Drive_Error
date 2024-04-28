@@ -35,4 +35,4 @@ sudo -s /volume1/scripts/syno_clear_drive_error.sh
 ## Screenshots
 
 <p align="center">Clearing critical error for 2 drives</p>
-<p align="center"><img src="/images/script-2.png"></p>
+<p align="center"><img src="/images/script-3.png"></p>
