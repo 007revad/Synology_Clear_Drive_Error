@@ -41,4 +41,5 @@ If Storage Manager is already open, close it and then open it again.
 ## Screenshots
 
 <p align="center">Clearing critical error for 2 drives</p>
-<p align="center"><img src="/images/script-3.png"></p>
+<p align="center"><img src="/images/script-4.png"></p>
+

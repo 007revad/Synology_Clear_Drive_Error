@@ -1,3 +1,7 @@
+v1.0.3
+- Bug fix.
+- Added message to close and reopen Storage Manager if it's already open.
+
 v1.0.2
 - Improved screen output.
 

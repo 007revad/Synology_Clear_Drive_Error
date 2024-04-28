@@ -17,9 +17,10 @@
 #------------------------------------------------------------------------------
 
 file="/var/log/synolog/.SYNODISKDB"
-level="status_critical"
+msg="status_critical"
+level="err"
 
-scriptver="v1.0.2"
+scriptver="v1.0.3"
 script=Synology_Clear_Drive_Error
 repo="007revad/Synology_Clear_Drive_Error"
 
@@ -84,7 +85,7 @@ fi
 
 # Assign status_critical entries to array
 readarray -t tmp_array < <(sqlite3 "${file}" <<EOF
-SELECT * FROM logs WHERE level ="${level}";
+SELECT * FROM logs WHERE level ="${level}" AND msg ="${msg}";
 .quit
 EOF
 )
@@ -109,11 +110,11 @@ fi
 
 if [[ ${#sorted_array[@]} -lt 1 ]]; then
     # Exit if no status_critical entries found
-    echo -e "\n${#sorted_array[@]} status_critical entries found\n"
+    echo -e "\n${#sorted_array[@]} $msg entries found\n"
     exit 1
 else
     # Show number of status_critical entries found
-    echo -e "\n$found status_critical entries found"
+    echo -e "\n$found $msg entries found"
 fi
 
 # Let user select drive
@@ -127,7 +128,7 @@ select choice in "${sorted_array[@]}"; do
         *\|*)
             model=$(echo "$choice" | cut -d"|" -f1)
             serial=$(echo "$choice" | cut -d"|" -f2)
-            echo -e "You selected ${Cyan}$choice${Off}"
+            echo -e "You selected ${Cyan}$model${Off} with serial number ${Cyan}$serial${Off}"
             break
         ;;
         *)
@@ -140,7 +141,7 @@ done
 # Delete matching entries of selected drive
 echo -e "\nEditing sqlite database"
 sqlite3 "${file}" <<EOF
-DELETE FROM logs WHERE level ="${level}" AND serial ="${serial}";
+DELETE FROM logs WHERE level ="${level}" AND msg ="${msg}" AND serial ="${serial}";
 .quit
 EOF
 
@@ -151,7 +152,7 @@ echo -e "sqlite3 exit code: $code"
 
 # Get remaining number of status_critical entries
 readarray -t edited_array < <(sqlite3 "${file}" <<EOF
-SELECT * FROM logs WHERE level ="${level}";
+SELECT * FROM logs WHERE level ="${level}" AND msg ="${msg}";
 .quit
 EOF
 )
@@ -165,14 +166,15 @@ EOF
 if [[ $found -gt "${#edited_array[@]}" ]]; then
     deleted=$((found -${#edited_array[@]}))
     if [[ $deleted -eq "0" ]]; then
-        echo -e "\n$deleted status_critical entry deleted"
+        echo -e "\n$deleted $msg entry deleted"
     else
-        echo -e "\n$deleted status_critical entries deleted"
+        echo -e "\n$deleted $msg entries deleted"
     fi
-    echo -e "\nYou can now use ${Cyan}$model${Off} with serial number ${Cyan}$serial${Off}\n"
+    echo -e "\nYou can now use ${Cyan}$model${Off} with serial number ${Cyan}$serial${Off}"
+    echo -e "\nIf Storage Manager is already open, close it then open it again.\n"
 else
     echo -e "\nNo staus_critical entries were deleted!"
-    echo -e "\n${#edited_array[@]} status_critical entries remain\n"
+    echo -e "\n${#edited_array[@]} $msg entries remain\n"
 fi
 
 exit
