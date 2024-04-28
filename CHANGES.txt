@@ -1,2 +1,5 @@
+v1.0.2
+- Improved screen output.
+
 v1.0.1
 - First release.
