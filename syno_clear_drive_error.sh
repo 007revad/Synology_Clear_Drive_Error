@@ -19,9 +19,9 @@
 file="/var/log/synolog/.SYNODISKDB"
 level="status_critical"
 
-scriptver="v1.0.1"
-script=Synology_clear_drive_error
-repo="007revad/Synology_clear_drive_error"
+scriptver="v1.0.2"
+script=Synology_Clear_Drive_Error
+repo="007revad/Synology_Clear_Drive_Error"
 
 # Show script version
 #echo -e "$script $scriptver\ngithub.com/$repo\n"
@@ -46,14 +46,14 @@ ding(){
 # Check script is running as root
 if [[ $( whoami ) != "root" ]]; then
     ding
-    echo -e "\n${Error}ERROR${Off} This script must be run as sudo or root!"
+    echo -e "\n${Error}ERROR${Off} This script must be run as sudo or root!\n"
     exit 1  # Not running as root
 fi
 
 
 if [[ ! -f "$file" ]]; then
     ding
-    echo -e "${Error}ERROR${Off} $file not found!"
+    echo -e "\n${Error}ERROR${Off} $file not found!\n"
     exit 1
 fi
 
@@ -89,9 +89,8 @@ SELECT * FROM logs WHERE level ="${level}";
 EOF
 )
 
-# Show number of status_critical entries found
+# Get number of status_critical entries found
 found="${#tmp_array[@]}"
-echo -e "\n$found status_critical entries found"
 
 # Assign drive|serial to array
 for e in "${tmp_array[@]}"; do
@@ -108,10 +107,13 @@ if [[ ${#new_array[@]} -gt "0" ]]; then
     done < <(printf "%s\0" "${new_array[@]}" | sort -uz)
 fi
 
-# Exit if no status_critical entries found
 if [[ ${#sorted_array[@]} -lt 1 ]]; then
-    echo "${#sorted_array[@]} status_critical entries found!"
+    # Exit if no status_critical entries found
+    echo -e "\n${#sorted_array[@]} status_critical entries found\n"
     exit 1
+else
+    # Show number of status_critical entries found
+    echo -e "\n$found status_critical entries found"
 fi
 
 # Let user select drive
@@ -123,8 +125,9 @@ select choice in "${sorted_array[@]}"; do
             exit
         ;;
         *\|*)
+            model=$(echo "$choice" | cut -d"|" -f1)
             serial=$(echo "$choice" | cut -d"|" -f2)
-            echo -e "You selected $choice"
+            echo -e "You selected ${Cyan}$choice${Off}"
             break
         ;;
         *)
@@ -135,13 +138,14 @@ select choice in "${sorted_array[@]}"; do
 done
 
 # Delete matching entries of selected drive
+echo -e "\nEditing sqlite database"
 sqlite3 "${file}" <<EOF
 DELETE FROM logs WHERE level ="${level}" AND serial ="${serial}";
 .quit
 EOF
 
 code="$?"
-echo -e "\nsqlite3 exit code: $code"
+echo -e "sqlite3 exit code: $code"
 
 #echo -e "\nserial: $serial\n"  # debug
 
@@ -159,9 +163,16 @@ EOF
 # Show result
 #echo "${#edited_array[@]} entries after deletion"
 if [[ $found -gt "${#edited_array[@]}" ]]; then
-    echo -e "\n$((found -${#edited_array[@]})) status_critical entries deleted\n"
+    deleted=$((found -${#edited_array[@]}))
+    if [[ $deleted -eq "0" ]]; then
+        echo -e "\n$deleted status_critical entry deleted"
+    else
+        echo -e "\n$deleted status_critical entries deleted"
+    fi
+    echo -e "\nYou can now use ${Cyan}$model${Off} with serial number ${Cyan}$serial${Off}\n"
 else
-    echo -e "\n${#edited_array[@]} status_critical entries after deletion\n"
+    echo -e "\nNo staus_critical entries were deleted!"
+    echo -e "\n${#edited_array[@]} status_critical entries remain\n"
 fi
 
 exit
