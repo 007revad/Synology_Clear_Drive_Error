@@ -14,6 +14,15 @@ If DSM decides a drive is critical DSM stores "status critical" in a database an
 
 **NOTE** The script does **not** fix a faulty drive.
 
+**If this script does not work use the following method:**
+1. Open Storage Manager and select the drive.
+2. Click on Actions then select Deactivate.
+3. Remove the drive from the NAS.
+4. Reboot.
+5. Insert the drive.
+6. Open Storage Manager and click on Repair.
+7. Select the drive, click Next then Repair.
+
 ## Download the script
 
 1. Download the latest version _Source code (zip)_ from https://github.com/007revad/Synology_clear_drive_error/releases
