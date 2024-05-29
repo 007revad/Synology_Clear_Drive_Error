@@ -14,7 +14,9 @@ If DSM decides a drive is critical DSM stores "status critical" in a database an
 
 **NOTE** The script does **not** fix a faulty drive.
 
-**If this script does not work use the following method:**
+### If this script does not work use the following method:
+
+**NAS with hotswap drive bays:** 
 1. Open Storage Manager and select the drive.
 2. Click on Actions then select Deactivate.
 3. Remove the drive from the NAS.
@@ -22,6 +24,18 @@ If DSM decides a drive is critical DSM stores "status critical" in a database an
 5. Insert the drive.
 6. Open Storage Manager and click on Repair.
 7. Select the drive, click Next then Repair.
+
+**NVMe drives or NAS without hotswap drive bays:** 
+1. Open Storage Manager and select the drive.
+2. Click on Actions then select Deactivate.
+3. Shut down the NAS.
+4. Remove the drive from the NAS.
+5. Boot the NAS.
+6. Shut down the NAS.
+7. Insert the drive.
+8. Boot the NAS.
+9. Open Storage Manager and click on Repair.
+10. Select the drive, click Next then Repair.
 
 ## Download the script
 
